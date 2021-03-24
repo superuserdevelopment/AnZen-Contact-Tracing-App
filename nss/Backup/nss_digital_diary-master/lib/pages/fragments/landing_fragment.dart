@@ -121,31 +121,42 @@ class _UpdatesCardState extends State<UpdatesCard> {
   int hours;
 
   void updateActivites() async {
-    activites = await Firestore.instance
-        .collection('Users')
-        .document(user.uid)
-        .collection('Events')
-        .getDocuments()
-        .then((myDocuements) {
-      return myDocuements.documents.length;
-    });
+    try {
+      activites = await Firestore.instance
+          .collection('Users')
+          .document(user.uid)
+          .collection('Events')
+          .getDocuments()
+          .then((myDocuements) {
+        return myDocuements.documents.length;
+      });
+    } catch (e) {
+      print(e);
+      activites = 0;
+      hours = 0;
+    }
   }
 
   void updateHours() async {
-    await Firestore.instance
-        .collection('Users')
-        .document(user.uid)
-        .collection('Events')
-        .snapshots()
-        .listen((snapshot) {
-      snapshot.documents.forEach((element) {
-        int a = snapshot.documents
-            .fold(0, (tot, doc) => tot + int.parse(doc.data['hours']));
-        setState(() {
-          hours = a;
+    try {
+      await Firestore.instance
+          .collection('Users')
+          .document(user.uid)
+          .collection('Events')
+          .snapshots()
+          .listen((snapshot) {
+        snapshot.documents.forEach((element) {
+          int a = snapshot.documents
+              .fold(0, (tot, doc) => tot + int.parse(doc.data['hours']));
+          setState(() {
+            hours = a;
+          });
         });
       });
-    });
+    } catch (e) {
+      print(e);
+      hours = 0;
+    }
   }
 
   @override
@@ -163,7 +174,7 @@ class _UpdatesCardState extends State<UpdatesCard> {
       //print('fetching activities');
       updateActivites();
     }
-    if (hours == -1) {
+    if (hours == -1 && activites != 0) {
       updateHours();
     }
 
@@ -225,16 +236,17 @@ class _UpdatesCardState extends State<UpdatesCard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SubCard('     Hours     ', hours.toString(), context),
+                      SubCard(
+                          '     Hours     ',
+                          hours.toString() == '-1' ? '0' : hours.toString(),
+                          context),
                       SubCard('   Activites   ', activites.toString(), context),
                       SubCard(
                           'Hrs/Activity',
-                          (hours / (activites != null ? activites : 1))
-                                      .floor()
-                                      .toString() ==
+                          (hours.abs() / activites.abs()).toString() ==
                                   'Infinity'
                               ? 'NA'
-                              : (hours / (activites != null ? activites : 1))
+                              : (hours.abs() / activites.abs())
                                   .floor()
                                   .toString(),
                           context),
