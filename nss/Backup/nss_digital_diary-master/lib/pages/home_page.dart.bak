@@ -1,0 +1,117 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:nss_digital_diary/models/user.dart';
+import 'package:nss_digital_diary/pages/loading.dart';
+import 'package:nss_digital_diary/services/auth.dart';
+import 'package:provider/provider.dart';
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  User user;
+  @override
+  Widget build(BuildContext context) {
+    user = Provider.of<User>(context);
+    print(user.uid);
+    return StreamBuilder(
+        stream: Firestore.instance
+            .collection('Users')
+            .document(user.uid)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot == null) {
+            return LoadingScreen();
+          }
+          if (!snapshot.hasData) {
+            return Text(
+              'Loading, Please Wait',
+              style: TextStyle(color: Colors.white),
+            );
+          }
+          String name =
+              snapshot.data['name'] != null ? snapshot.data['name'] : "null";
+          String email =
+              snapshot.data['email'] != null ? snapshot.data['email'] : "null";
+          String college = snapshot.data['collegeName'] != null
+              ? snapshot.data['collegeName']
+              : "null";
+          String course = snapshot.data['course'] != null
+              ? snapshot.data['course']
+              : "null";
+          String bloodGroup = snapshot.data['bloodGroup'] != null
+              ? snapshot.data['bloodGroup']
+              : "null";
+          String birthdate = snapshot.data['birthdate'] != null
+              ? snapshot.data['birthdate']
+              : "null";
+          String volunteerEnrollmentCode =
+              snapshot.data['volunteerEnrollmentCode'] != null
+                  ? snapshot.data['volunteerEnrollmentCode']
+                  : "null";
+          String address = snapshot.data['address'] != null
+              ? snapshot.data['address']
+              : "null";
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Home Page"),
+            ),
+            body: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50.0),
+              child: Center(
+                child: Card(
+                  elevation: 10.0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 20.0),
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Profile Details",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        Divider(
+                          color: Theme.of(context).primaryColor,
+                          thickness: 2.0,
+                        ),
+                        Text("Name: $name"),
+                        Text("Email: $email"),
+                        Text("College Name: $college"),
+                        Text("Course: $course"),
+                        Text("Birth Date: $birthdate"),
+                        Text("Address: $address"),
+                        Text("Blood Group: $bloodGroup"),
+                        Text(
+                            "Volunteer Enrollment Code: $volunteerEnrollmentCode"),
+                        Divider(
+                          color: Theme.of(context).primaryColor,
+                          thickness: 2.0,
+                        ),
+                        RaisedButton(
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            AuthenticationService _auth =
+                                new AuthenticationService();
+                            _auth.signOut();
+                          },
+                          color: Colors.red,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+}
