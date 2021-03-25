@@ -61,7 +61,8 @@ class _LandingFragmentState extends State<LandingFragment> {
                           child: InkWell(
                             splashColor: Theme.of(context).accentColor,
                             onTap: () {
-                              Navigator.pushNamed(context, '/newActivity');
+                              Navigator.popAndPushNamed(
+                                  context, '/newActivity');
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(
@@ -100,7 +101,7 @@ class _LandingFragmentState extends State<LandingFragment> {
                           child: InkWell(
                             splashColor: Theme.of(context).accentColor,
                             onTap: () {
-                              Navigator.pushNamed(context, '/diary');
+                              Navigator.popAndPushNamed(context, '/diary');
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(
@@ -139,7 +140,7 @@ class _LandingFragmentState extends State<LandingFragment> {
                           child: InkWell(
                             splashColor: Theme.of(context).accentColor,
                             onTap: () {
-                              Navigator.pushNamed(context, '/reports');
+                              Navigator.popAndPushNamed(context, '/reports');
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(

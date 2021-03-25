@@ -6,6 +6,7 @@ import 'package:nss_digital_diary/services/auth.dart';
 import 'package:nss_digital_diary/services/database.dart';
 import 'package:nss_digital_diary/widget_assets/message_box.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../loading.dart';
 
@@ -41,12 +42,37 @@ class _NewEventFragmentState extends State<NewEventFragment> {
                     horizontal: 20.0, vertical: 20.0),
                 child: ListView(
                   children: [
-                    Text(
-                      'New Activity',
-                      style: TextStyle(
-                          fontSize: 40.0,
-                          fontFamily: 'Neue_Montreal',
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'New Activity',
+                          style: TextStyle(
+                              fontSize: 40.0,
+                              fontFamily: 'Neue_Montreal',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        RaisedButton(
+                            splashColor: Theme.of(context).primaryColor,
+                            color: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(
+                                Icons.qr_code_rounded,
+                                size: 40.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: () {
+                              try {
+                                Navigator.pushNamed(context, '/qr');
+                              } catch (e) {
+                                print(e);
+                              }
+                            }),
+                      ],
                     ),
                     Form(
                       key: _NewEventformKey,

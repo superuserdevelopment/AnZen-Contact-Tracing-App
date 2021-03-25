@@ -13,8 +13,12 @@ import 'fragments/account_fragment.dart';
 import 'fragments/landing_fragment.dart';
 
 class HomePage extends StatefulWidget {
+  int index = 0;
+  HomePage(int i) {
+    index = i;
+  }
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(index);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -28,14 +32,14 @@ class _HomePageState extends State<HomePage> {
     AccountFragment(),
   ];
   int _currentIndex = 0;
+
+  _HomePageState(int index) {
+    _currentIndex = index;
+  }
   @override
   void initState() {
     super.initState();
     //_databaseService.retrieveCourse();
-  }
-
-  void pushNewActivity() {
-    _currentIndex = 3;
   }
 
   @override
