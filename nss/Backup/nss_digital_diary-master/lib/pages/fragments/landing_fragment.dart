@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:carousel_images/carousel_images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nss_digital_diary/models/user.dart';
+import 'package:nss_digital_diary/pages/fragments/diary_fragment.dart';
+import 'package:nss_digital_diary/pages/home_page.dart';
 import 'package:nss_digital_diary/services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -25,35 +29,185 @@ class _LandingFragmentState extends State<LandingFragment> {
   @override
   Widget build(BuildContext context) {
     user = Provider.of<User>(context);
-    return SafeArea(
-      child: Scaffold(
-        body: ListView(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: Logo(),
-            ),
-            SizedBox(height: 20.0),
-            CarouselImages(
-              scaleFactor: 0.6,
-              listImages: listImages,
-              height: 350.0,
-              borderRadius: 25.0,
-              cachedNetworkImage: true,
-              verticalAlignment: Alignment.center,
-              onTap: (index) {
-                print('Tapped on page $index');
-              },
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Padding(
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Colors.red, Colors.blue])),
+      child: SafeArea(
+        child: Scaffold(
+          body: ListView(
+            children: [
+              Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 10.0),
-                child: UpdatesCard()),
-          ],
+                child: Logo(),
+              ),
+              //SizedBox(height: 10.0),
+              Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 5.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          color: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 5.0,
+                          child: InkWell(
+                            splashColor: Theme.of(context).accentColor,
+                            onTap: () {
+                              Navigator.pushNamed(context, '/newActivity');
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 10.0),
+                              height: 50.0,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.add_circle,
+                                      color: Colors.white,
+                                      size: 20.0,
+                                    ),
+                                    Text(
+                                      "Add an activity",
+                                      style: TextStyle(
+                                        fontSize: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          color: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 5.0,
+                          child: InkWell(
+                            splashColor: Theme.of(context).accentColor,
+                            onTap: () {
+                              Navigator.pushNamed(context, '/diary');
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 10.0),
+                              height: 50.0,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.book,
+                                      color: Colors.white,
+                                      size: 20.0,
+                                    ),
+                                    Text(
+                                      "View your diary",
+                                      style: TextStyle(
+                                        fontSize: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          color: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)),
+                          elevation: 5.0,
+                          child: InkWell(
+                            splashColor: Theme.of(context).accentColor,
+                            onTap: () {
+                              Navigator.pushNamed(context, '/reports');
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 10.0),
+                              height: 50.0,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.graphic_eq,
+                                      color: Colors.white,
+                                      size: 20.0,
+                                    ),
+                                    Text(
+                                      "View your reports",
+                                      style: TextStyle(
+                                        fontSize: 8.0,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Card(
+                  clipBehavior: Clip.hardEdge,
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [Colors.red, Colors.blue]),
+                        //border: Border.all(color: Colors.red, width: 3.0),
+                        borderRadius: BorderRadius.circular(25.0)),
+                    child: CarouselImages(
+                      scaleFactor: 0.6,
+                      listImages: listImages,
+                      height: MediaQuery.of(context).size.height / 3,
+                      borderRadius: 25.0,
+                      cachedNetworkImage: true,
+                      verticalAlignment: Alignment.center,
+                      onTap: (index) {
+                        print('Tapped on page $index');
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 10.0),
+                  child: UpdatesCard()),
+            ],
+          ),
         ),
       ),
     );
@@ -66,43 +220,49 @@ class Logo extends StatelessWidget {
     return Card(
       elevation: 5.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/rasters/logo.png',
-                width: 60.0,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Expanded(
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Column(
-                    children: [
-                      Text(
-                        'National Service Scheme',
-                        style: TextStyle(
-                            //fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      Text(
-                        'Vidyalankar School of Information Technology',
-                        style: TextStyle(
-                            fontSize: 8.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                    ],
+      child: Container(
+        height: MediaQuery.of(context).size.height / 10,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.red, width: 3.0),
+            borderRadius: BorderRadius.circular(25.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/rasters/logo.png',
+                  width: 60.0,
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Column(
+                      children: [
+                        Text(
+                          'National Service Scheme',
+                          style: TextStyle(
+                              //fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          'Vidyalankar School of Information Technology',
+                          style: TextStyle(
+                              fontSize: 8.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -122,13 +282,16 @@ class _UpdatesCardState extends State<UpdatesCard> {
 
   void updateActivites() async {
     try {
-      activites = await Firestore.instance
+      int temp = await Firestore.instance
           .collection('Users')
           .document(user.uid)
           .collection('Events')
           .getDocuments()
           .then((myDocuements) {
         return myDocuements.documents.length;
+      });
+      setState(() {
+        activites = temp;
       });
     } catch (e) {
       print(e);
@@ -179,8 +342,11 @@ class _UpdatesCardState extends State<UpdatesCard> {
     }
 
     return StreamBuilder(
-      stream:
-          Firestore.instance.collection('Users').document(user.uid).snapshots(),
+      stream: Firestore.instance
+          .collection('Users')
+          .document(user.uid)
+          .collection('Events')
+          .snapshots(),
       builder: (context, snapshot) {
         if (snapshot == null) {
           return LoadingScreen();
@@ -191,34 +357,18 @@ class _UpdatesCardState extends State<UpdatesCard> {
             style: TextStyle(color: Colors.white),
           );
         }
-        //updateActivites();
-        // String event =
-        //     snapshot.data['Event'] != null ? snapshot.data['Event'] : "null";
-        // String college = snapshot.data['collegeName'] != null
-        //     ? snapshot.data['collegeName']
-        //     : "null";
-        // String course = snapshot.data['course'] != null
-        //     ? snapshot.data['course']
-        //     : "null";
-        // String bloodGroup = snapshot.data['bloodGroup'] != null
-        //     ? snapshot.data['bloodGroup']
-        //     : "null";
-        // String birthdate = snapshot.data['birthdate'] != null
-        //     ? snapshot.data['birthdate']
-        //     : "null";
-        // String volunteerEnrollmentCode =
-        //     snapshot.data['volunteerEnrollmentCode'] != null
-        //         ? snapshot.data['volunteerEnrollmentCode']
-        //         : "null";
-        // String address = snapshot.data['address'] != null
-        //     ? snapshot.data['address']
-        //     : "null";
         return Card(
-          color: Theme.of(context).accentColor,
+          //color: Theme.of(context).accentColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
           elevation: 5.0,
           child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20.5)),
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Colors.red, Colors.blue])),
             //height: 100.0,
             child: Padding(
               padding:
@@ -228,7 +378,10 @@ class _UpdatesCardState extends State<UpdatesCard> {
                 children: [
                   Text(
                     "Your Progress",
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 8.0,
@@ -240,12 +393,15 @@ class _UpdatesCardState extends State<UpdatesCard> {
                           '     Hours     ',
                           hours.toString() == '-1' ? '0' : hours.toString(),
                           context),
-                      SubCard('   Activites   ', activites.toString(), context),
+                      SubCard(
+                          '   Activites   ',
+                          activites == -1 ? "0" : activites.toString(),
+                          context),
                       SubCard(
                           'Hrs/Activity',
                           (hours.abs() / activites.abs()).toString() ==
                                   'Infinity'
-                              ? 'NA'
+                              ? '0'
                               : (hours.abs() / activites.abs())
                                   .floor()
                                   .toString(),

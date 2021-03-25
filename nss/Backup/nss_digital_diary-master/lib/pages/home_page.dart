@@ -34,6 +34,10 @@ class _HomePageState extends State<HomePage> {
     //_databaseService.retrieveCourse();
   }
 
+  void pushNewActivity() {
+    _currentIndex = 3;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
