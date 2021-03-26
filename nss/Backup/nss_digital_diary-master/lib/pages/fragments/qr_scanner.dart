@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:nss_digital_diary/models/Event.dart';
 import 'package:nss_digital_diary/models/user.dart';
 import 'package:nss_digital_diary/pages/fragments/reports_fragment.dart';
+import 'package:nss_digital_diary/pages/loading.dart';
+import 'package:nss_digital_diary/services/database.dart';
 import 'package:nss_digital_diary/widget_assets/message_box.dart';
 import 'package:nss_digital_diary/widget_assets/ui_elements.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +24,8 @@ class _QRScannerState extends State<QRScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   User user;
   Event event;
+  bool loading = false;
+  bool alreadyPresent = false;
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -34,39 +38,52 @@ class _QRScannerState extends State<QRScanner> {
   }
 
   void fetchActivity(String code) async {
+    String facultyCode = code.substring(0, code.indexOf('-') - 1);
+    String eventCode = code.substring(code.indexOf('-') + 2);
+    await Firestore.instance
+        .collection('Admins')
+        .document(facultyCode)
+        .collection('Events')
+        .snapshots()
+        .listen((snapshot) {
+      snapshot.documents.forEach((document) {
+        if (document.documentID.toString() == eventCode) {
+          if (document['title'] != null &&
+              document['natureOfWork'] != null &&
+              document['hours'] != null &&
+              document['description'] != null &&
+              // document['supervisorId'] != null &&
+              document['date'] != null &&
+              document['verified'] != null) {
+            setState(() {
+              event = new Event(
+                  title: document['title'],
+                  natureOfWork: document['natureOfWork'],
+                  hours: int.parse(document['hours']),
+                  description: document['description'],
+                  dateTime: DateTime.parse(document['date']),
+                  supervisorId: facultyCode);
+
+              event.verifyEvent();
+            });
+            //print(event.title)
+
+          }
+          return null;
+        }
+      });
+    });
     await Firestore.instance
         .collection('Users')
         .document(user.uid)
         .collection('Events')
         .snapshots()
         .listen((snapshot) {
-      snapshot.documents.forEach((document) {
-        //print(document.documentID.toString());
-        if (document.documentID.toString() == code) {
-          if (document['title'] != null &&
-              document['natureOfWork'] != null &&
-              document['hours'] != null &&
-              document['description'] != null &&
-              document['supervisorId'] != null &&
-              document['date'] != null &&
-              document['verified'] != null) {
-            setState(() {
-              event = new Event(
-                title: document['title'],
-                natureOfWork: document['natureOfWork'],
-                hours: int.parse(document['hours']),
-                description: document['description'],
-                dateTime: DateTime.parse(document['date']),
-                supervisorId: document['supervisorId'],
-              );
-              if (document['verified'].toString() == "true") {
-                event.verifyEvent();
-              }
-            });
-            //print(event.title)
-
-          }
-          return null;
+      snapshot.documents.forEach((element) {
+        if (element['title'] == event.title) {
+          setState(() {
+            alreadyPresent = true;
+          });
         }
       });
     });
@@ -83,37 +100,65 @@ class _QRScannerState extends State<QRScanner> {
       // }
       fetchActivity(result.code.toString());
       //Navigator.popAndPushNamed(context, '\reports');
-      return SafeArea(
-        child: Scaffold(
-          body: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Text(
-                    "QR Code Successfully Scanned",
-                    style: TextStyle(fontSize: 24.0),
+      return loading
+          ? LoadingScreen()
+          : SafeArea(
+              child: Scaffold(
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          "QR Code Successfully Scanned",
+                          style: TextStyle(fontSize: 24.0),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          "Please Wait while we fetch the Activity",
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                      ),
+                      Center(
+                          child: event != null
+                              ? Column(
+                                  children: [
+                                    ActivityCard(
+                                      event: event,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: alreadyPresent
+                                            ? null
+                                            : () async {
+                                                setState(() {
+                                                  loading = true;
+                                                });
+                                                await DatabaseService(
+                                                        uid: user.uid)
+                                                    .updateEvent(event);
+                                                setState(() {
+                                                  loading = false;
+                                                });
+                                                showAlertDialog(
+                                                    "Successful",
+                                                    "Activity Added Successfully",
+                                                    context);
+                                                Navigator.pop(context);
+                                              },
+                                        child: Text(alreadyPresent
+                                            ? 'Event already added'
+                                            : 'Add this Activity to your Diary'))
+                                  ],
+                                )
+                              : Text("Failed to find Activity, please retry")),
+                    ],
                   ),
                 ),
-                Center(
-                  child: Text(
-                    "Please Wait while we fetch the Activity",
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ),
-                Center(
-                    child: event != null
-                        ? ActivityCard(
-                            event: event,
-                          )
-                        : Text("Failed to find Activity, please retry")),
-              ],
-            ),
-          ),
-        ),
-      );
+              ),
+            );
     }
 
     return Scaffold(

@@ -6,7 +6,7 @@ class Event {
   DateTime dateTime;
   int hours;
   bool _verified;
-
+  String id;
   Event(
       {this.title,
       this.dateTime,

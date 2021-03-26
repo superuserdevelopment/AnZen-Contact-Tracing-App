@@ -28,6 +28,7 @@ class _DiaryFragmentState extends State<DiaryFragment> {
     events.add(event);
     events.add(event);
     events.add(event);
+    print('Entered Diary Fragment');
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -72,12 +73,12 @@ class _DiaryFragmentState extends State<DiaryFragment> {
                           dateTime: DateTime.parse(document['date']),
                           supervisorId: document['supervisorId'],
                         );
-
+                        event.id = document.documentID;
                         if (document['verified'].toString() == "true") {
                           event.verifyEvent();
-                          print('Verifying');
+                          //print('Verifying');
                         }
-                        print("Verified?" + event.isVerified().toString());
+                        //print("Verified?" + event.isVerified().toString());
                         events.add(event);
                       }
                     });

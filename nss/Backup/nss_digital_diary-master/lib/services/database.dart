@@ -59,6 +59,14 @@ class DatabaseService {
     });
   }
 
+  Future deleteEvent(String id) async {
+    await usersCollection
+        .document(uid)
+        .collection('Events')
+        .document(id)
+        .delete();
+  }
+
   // Future<List<Course>> retrieveCourse() async {
   //   QuerySnapshot coursesQuery = await coursesCollection.getDocuments();
   //   List<Course> courses = new List<Course>();
