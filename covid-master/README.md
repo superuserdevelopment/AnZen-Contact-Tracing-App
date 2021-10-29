@@ -1,16 +1,23 @@
-# covid
+# anZen - The Contact Tracing Application
 
-A new Flutter application.
+## Overview:
 
-## Getting Started
+Our app _“anZen”_ aims to overcome the current limitations of the “Arogya Setu” app by implementing the following features:
 
-This project is a starting point for a Flutter application.
+* Real-time contact tracing & distance alerts, even if other people do not have the app installed
 
-A few resources to get you started if this is your first Flutter project:
+* Alerting users via push notifications if they are present in the vicinity with multiple medium to high-risk people.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+* Live-updates with visual representations of cumulative cases in India as well as in a particular state. 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Reporting oneself as Covid +ve.
+
+* The app also contains various guidelines & articles about:
+
+* Maintaining social-distancing protocols.
+
+* Symptoms observed by Covid +ve patients.
+
+* Proper sanitization measures to be taken by an individual at home, work & in public places.
+
+## Project Media
