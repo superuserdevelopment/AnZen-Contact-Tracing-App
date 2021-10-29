@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <td colspan=4 align=center><img src="/covid-master/Project_Media/mockup2.gif">
+    <td colspan=4 align=center><img height=500 src="/covid-master/Project_Media/mockup2.gif">
   </tr>
 <tr>
 <td><img src="/covid-master/Project_Media/login.gif">
