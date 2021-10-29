@@ -1,6 +1,9 @@
 # anZen - The Contact Tracing Application
 
 <table>
+  <tr>
+    <td colspan=4 align=center><img src="/covid-master/Project_Media/mockup2.gif">
+  </tr>
 <tr>
 <td><img src="/covid-master/Project_Media/login.gif">
 </td>
