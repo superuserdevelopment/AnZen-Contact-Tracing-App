@@ -21,3 +21,15 @@ Our app _“anZen”_ aims to overcome the current limitations of the “Arogya 
 * Proper sanitization measures to be taken by an individual at home, work & in public places.
 
 ## Project Media
+<table>
+<tr>
+<td><img src="/covid-master/Project_Media/login.gif">
+</td>
+  <td><img src="/covid-master/Project_Media/Main_Screen.gif">
+</td>  
+<td><img src="/covid-master/Project_Media/Contact-Tracing.gif">
+</td>
+  <td><img src="/covid-master/Project_Media/analytics.gif">
+</td>
+    </tr>  
+<table>
