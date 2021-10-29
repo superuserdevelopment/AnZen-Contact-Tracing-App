@@ -16,7 +16,7 @@
 
 ## Overview:
 
-Our app _“anZen”_ aims to overcome the current limitations of the popular contact tracing app while maintaining the privacy of the users by implementing the following features:
+This app _“anZen”_ aims to overcome the current limitations of the popular contact tracing app while maintaining the privacy of the users by implementing the following features:
 
 * Real-time contact tracing & distance alerts, even if other people do not have the app installed.
 * Information is shared anonymously with nearby devices even without internet.
